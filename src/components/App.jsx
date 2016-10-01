@@ -4,13 +4,29 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      curVideo: window.exampleVideoData[0]
+      curVideo: window.exampleVideoData[0],
+      videos: []
     };
   }
 
+  set(data) {
+    this.setState({
+      curVideo: data[0],
+      videos: data
+    });
+  }
+
   render() {
-    // debugger;
-    var videos = window.searchYouTube({}, this.props.searchYouTube);
+    var options = {
+      query: 'dogs',
+      max: 3,
+      key: 'AIzaSyAUeN4BNdnstGYB58BHhWAInw-31totrsU'
+    };
+    debugger;
+
+    // window.searchYouTube(options, this.props.searchYouTube);
+    this.props.searchYouTube(options, (data) => { this.set(data); });
+
     return (
       <div>
         <Nav />
@@ -18,7 +34,7 @@ class App extends React.Component {
           <VideoPlayer video={this.state.curVideo} />
         </div>
         <div className="col-md-5">
-          <VideoList onClickFunc={this.onVideoEntryClick.bind(this)} videos={window.exampleVideoData}/>
+          <VideoList onClickFunc={this.onVideoEntryClick.bind(this)} videos={this.state.videos}/>
         </div>
       </div>
     );
