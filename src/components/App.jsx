@@ -19,8 +19,8 @@ class App extends React.Component {
   componentDidMount() {
     var options = {
       query: 'dogs',
-      max: 3,
-      key: 'AIzaSyAUeN4BNdnstGYB58BHhWAInw-31totrsU'
+      max: 10,
+      key: window.YOUTUBE_API_KEY
     };
     return this.props.searchYouTube(options, (data) => { this.set(data); });
   }
@@ -28,7 +28,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Nav />
+        <Nav onClickFunc={this.onSearchButtonClick.bind(this)} onEnterFunc={this.onSearchButtonEnter.bind(this)}/>
         <div className="col-md-7">
           <VideoPlayer video={this.state.curVideo} />
         </div>
@@ -40,12 +40,32 @@ class App extends React.Component {
   }
 
   onVideoEntryClick(event) {
+    $("html, body").animate({ scrollTop: 0 }, "fast");
     var video = JSON.parse(event.target.dataset.vid);
     this.setState({
       curVideo: video
     });
   }
 
+  onSearchButtonClick(event) {
+    var options = {
+      query: event.target.closest('div').getElementsByTagName('input')[0].value,
+      max: 10,
+      key: window.YOUTUBE_API_KEY
+    };
+    return this.props.searchYouTube(options, (data) => { this.set(data); }); 
+  }
+
+  onSearchButtonEnter(event) {
+    if (event.keyCode === 13) {
+      var options = {
+        query: event.target.closest('div').getElementsByTagName('input')[0].value,
+        max: 10,
+        key: window.YOUTUBE_API_KEY
+      };
+      return this.props.searchYouTube(options, (data) => { this.set(data); }); 
+    }
+  }
 }
 
 // In the ES6 spec, files are "modules" and do not share a top-level scope
