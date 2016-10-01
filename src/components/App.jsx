@@ -16,17 +16,16 @@ class App extends React.Component {
     });
   }
 
-  render() {
+  componentDidMount() {
     var options = {
       query: 'dogs',
       max: 3,
       key: 'AIzaSyAUeN4BNdnstGYB58BHhWAInw-31totrsU'
     };
-    debugger;
+    return this.props.searchYouTube(options, (data) => { this.set(data); });
+  }
 
-    // window.searchYouTube(options, this.props.searchYouTube);
-    this.props.searchYouTube(options, (data) => { this.set(data); });
-
+  render() {
     return (
       <div>
         <Nav />
